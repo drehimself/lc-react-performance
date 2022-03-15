@@ -1,34 +1,39 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import Child from './Child';
 
 function App() {
   const [count, setCount] = useState(0);
-  const [arr, setArr] = useState([1, 2, 3]);
+  const [anotherCount, setAnotherCount] = useState(100);
 
-  console.log('I am rendering');
+  console.log('Parent is rendering');
 
   function increment() {
     setCount(prevCount => prevCount + 1);
   }
 
-  function addNumbers() {
-    console.log('I take long to compute.');
-    // for (let index = 0; index < 2_000_000_000; index++) {} // simulate slowness
-    return arr.reduce((a, b) => a + b, 0);
+  function incrementAnother() {
+    setAnotherCount(prevCount => prevCount + 1);
   }
 
-  function changeArray() {
-    setArr([1, 2, 3, 4]);
+  function incrementByTwo() {
+    setCount(prevCount => prevCount + 2);
   }
+
+  const memoizedIncrementByTwo = useCallback(incrementByTwo, []);
 
   return (
-    <div className="App">
+    <div>
       <div>
         <div>Count: {count}</div>
         <button onClick={increment}>Increment</button>
       </div>
+      <div>
+        <div>Another Count: {anotherCount}</div>
+        <button onClick={incrementAnother}>Increment Another</button>
+      </div>
       <div style={{ marginTop: '60px' }}>
-        <button onClick={changeArray}>Change Array of Numbers</button>
-        <div>Expensive Computation: {addNumbers()}</div>
+        {/* <Child count={count} incrementByTwo={incrementByTwo} /> */}
+        <Child count={count} incrementByTwo={memoizedIncrementByTwo} />
       </div>
     </div>
   );

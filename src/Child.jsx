@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import GrandChild from './GrandChild';
 
-function Child() {
+function Child({ count, incrementByTwo }) {
   console.log('Child is rendering');
 
   return (
     <div>
-      <div>Child Component</div>
+      <div>Child Component: {count}</div>
+      <button onClick={incrementByTwo}>+2</button>
       <div>
         <GrandChild />
       </div>
@@ -14,4 +15,4 @@ function Child() {
   );
 }
 
-export default Child;
+export default memo(Child);
